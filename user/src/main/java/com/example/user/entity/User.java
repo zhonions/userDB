@@ -8,7 +8,7 @@ import lombok.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "user")
+@Table(name = "user_table")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Data
 @NoArgsConstructor
