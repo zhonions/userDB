@@ -39,14 +39,14 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteUserById(@PathVariable final Long userId){
-        userService.deleteUserById(userId);
+    public void deleteUserById(@PathVariable final Long id){
+        userService.deleteUserById(id);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public User updateUserById(@RequestBody User user, @PathVariable final Long userId){
-        return userService.updateUserById(user,userId);
+    public User updateUserById(@RequestBody User user, @PathVariable final Long id){
+        return userService.updateUserById(user,id);
     }
 
 
