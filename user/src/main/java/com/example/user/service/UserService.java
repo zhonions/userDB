@@ -23,6 +23,7 @@ public class UserService {
     }
 
     public void deleteUserById(final Long userId) {
+
         this.userRepository.deleteById(userId);
     }
 
