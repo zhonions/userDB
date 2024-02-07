@@ -200,8 +200,7 @@ class UserServiceTest {
         User updatedUser = new User();
         updatedUser.setName("");
         updatedUser.setPassword(null);
-
-        assertThrows(IllegalArgumentException.class, () -> userService.updateUserById(updatedUser, 1L));
+        assertThrows(UserIdNotFoundException.class, () -> userService.updateUserById(updatedUser, 1L));
     }
     @Test
     void testUpdateUserWithNonExistingUserId() {
@@ -223,7 +222,7 @@ class UserServiceTest {
 
         User updatedUser = null;
 
-        assertThrows(IllegalArgumentException.class, () -> userService.updateUserById(updatedUser, 1L));
+        assertThrows(UserIdNotFoundException.class, () -> userService.updateUserById(updatedUser, 1L));
     }
 
 }

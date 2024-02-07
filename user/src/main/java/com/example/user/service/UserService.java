@@ -74,6 +74,9 @@ public class UserService {
 
 
     public User updateUserById(User user, final Long userId) {
+        if (user == null || user.getName() == null || user.getPassword() == null) {
+            throw new UserIdNotFoundException("User or its properties cannot be null");
+        }
 
         boolean userBlank = user.getName().isBlank() || user.getPassword().isBlank();
         boolean userEmpty = user.getName().isEmpty() || user.getPassword().isEmpty();
