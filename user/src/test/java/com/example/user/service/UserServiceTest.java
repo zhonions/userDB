@@ -200,7 +200,7 @@ class UserServiceTest {
         User updatedUser = new User();
         updatedUser.setName("");
         updatedUser.setPassword(null);
-        assertThrows(UserIdNotFoundException.class, () -> userService.updateUserById(updatedUser, 1L));
+        assertThrows(UserInvalidAttributesException.class, () -> userService.updateUserById(updatedUser, 1L));
     }
     @Test
     void testUpdateUserWithNonExistingUserId() {
@@ -211,7 +211,7 @@ class UserServiceTest {
         updatedUser.setName("name");
         updatedUser.setPassword("pass");
 
-        assertThrows(UserIdNotFoundException.class, () -> userService.updateUserById(updatedUser, 1L));
+        assertThrows(UserInvalidAttributesException.class, () -> userService.updateUserById(updatedUser, 1L));
     }
     @Test
     void testUpdateUserWithInvalidUser() {
@@ -222,7 +222,7 @@ class UserServiceTest {
 
         User updatedUser = null;
 
-        assertThrows(UserIdNotFoundException.class, () -> userService.updateUserById(updatedUser, 1L));
+        assertThrows(UserInvalidAttributesException.class, () -> userService.updateUserById(updatedUser, 1L));
     }
 
 }

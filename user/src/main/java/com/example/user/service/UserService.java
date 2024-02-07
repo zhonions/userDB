@@ -27,11 +27,6 @@ public class UserService {
         }
         return this.userRepository.save(user);
     }
-
-    private boolean isUserInvalid(User user) {
-        return isNull(user) || Strings.isBlank(user.getPassword()) || Strings.isBlank(user.getName());
-    }
-
     public List<User> getAllUsers() {
         return this.userRepository.findAll();
     }
@@ -41,6 +36,7 @@ public class UserService {
         if (userOptional.isPresent()) {
             this.userRepository.deleteById(userId);
         }else{
+            log.error("No users found with this id: " + userId);
             throw new UserIdNotFoundException("User Not Found");
         }
 
@@ -48,10 +44,10 @@ public class UserService {
     public Optional<User> findUserById(final long id) {
         Optional<User> userList = this.userRepository.findById(id);
 
-        log.info("Received request to find users with name " + id);
+        log.info("Received request to find users with id:" + id);
 
         if (isNull(userList) || userList.isEmpty()) {
-            log.error("No users found with name " + id);
+            log.error("No users found with this id:" + id);
 
             throw new UserIdNotFoundException("Users with name " + id + " do not exist");
         }
@@ -75,13 +71,15 @@ public class UserService {
 
     public User updateUserById(User user, final Long userId) {
         if (user == null || user.getName() == null || user.getPassword() == null) {
-            throw new UserIdNotFoundException("User or its properties cannot be null");
+            log.error("User or its properties cannot be null " + userId);
+            throw new UserInvalidAttributesException("User or its properties cannot be null");
         }
 
         boolean userBlank = user.getName().isBlank() || user.getPassword().isBlank();
         boolean userEmpty = user.getName().isEmpty() || user.getPassword().isEmpty();
 
         if (userBlank || userEmpty) {
+            log.error("Name or password cannot be empty or blank " + userId);
             throw new UserInvalidAttributesException("Name or password cannot be null, empty or blank");
         }
 
@@ -91,7 +89,11 @@ public class UserService {
             updatedUser.setPassword(user.getPassword());
             return userRepository.save(updatedUser);
         } else {
-            throw new UserIdNotFoundException("User not found");
+            throw new UserInvalidAttributesException("User not found");
         }
     }
+    private boolean isUserInvalid(User user) {
+        return isNull(user) || Strings.isBlank(user.getPassword()) || Strings.isBlank(user.getName());
+    }
+
 }
