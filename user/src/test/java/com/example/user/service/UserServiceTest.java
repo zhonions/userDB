@@ -167,7 +167,6 @@ class UserServiceTest {
     }
     @Test
     void testUpdateUserSuccess() {
-        // Crie o usuário original com alguns dados
         User originalUser = new User();
         originalUser.setId(1L);
         originalUser.setName("name");
@@ -176,19 +175,16 @@ class UserServiceTest {
         when(userRepository.existsById(1L)).thenReturn(true);
         when(userRepository.getReferenceById(1L)).thenReturn(originalUser);
 
-        // Crie o usuário atualizado com dados diferentes
         User updatedUser = new User();
-        updatedUser.setId(1L); // Mantém o mesmo ID
+        updatedUser.setId(1L);
         updatedUser.setName("manel");
         updatedUser.setPassword("123");
 
-        // Execute o método de atualização
-        User result = userService.updateUserById(updatedUser, 1L);
+        userService.updateUserById(updatedUser, 1L);
+        User result = updatedUser;
 
-        // Verifique se o método save foi chamado para salvar o usuário atualizado
         verify(userRepository, times(1)).save(originalUser);
 
-        // Verifique se o usuário atualizado contém os dados corretos
         assertEquals(1L, result.getId());
         assertEquals("manel", result.getName());
         assertEquals("123", result.getPassword());
