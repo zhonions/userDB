@@ -190,7 +190,40 @@ class UserServiceTest {
         assertEquals("123", result.getPassword());
     }
 
+    @Test
+    void testUpdateUserWithEmptyAttributes() {
+        User originalUser = new User();
+        originalUser.setId(1L);
+        originalUser.setName("name");
+        originalUser.setPassword("pass");
 
+        User updatedUser = new User();
+        updatedUser.setName("");
+        updatedUser.setPassword(null);
 
+        assertThrows(IllegalArgumentException.class, () -> userService.updateUserById(updatedUser, 1L));
+    }
+    @Test
+    void testUpdateUserWithNonExistingUserId() {
+        when(userRepository.existsById(1L)).thenReturn(false);
+
+        User updatedUser = new User();
+        updatedUser.setId(1L);
+        updatedUser.setName("name");
+        updatedUser.setPassword("pass");
+
+        assertThrows(UserIdNotFoundException.class, () -> userService.updateUserById(updatedUser, 1L));
+    }
+    @Test
+    void testUpdateUserWithInvalidUser() {
+        User originalUser = new User();
+        originalUser.setId(1L);
+        originalUser.setName("name");
+        originalUser.setPassword("pass");
+
+        User updatedUser = null;
+
+        assertThrows(IllegalArgumentException.class, () -> userService.updateUserById(updatedUser, 1L));
+    }
 
 }

@@ -74,8 +74,12 @@ public class UserService {
 
 
     public User updateUserById(User user, final Long userId) {
-        if (user == null || user.getName() == null || user.getPassword() == null) {
-            throw new IllegalArgumentException("User or its properties cannot be null");
+
+        boolean userBlank = user.getName().isBlank() || user.getPassword().isBlank();
+        boolean userEmpty = user.getName().isEmpty() || user.getPassword().isEmpty();
+
+        if (userBlank || userEmpty) {
+            throw new UserInvalidAttributesException("Name or password cannot be null, empty or blank");
         }
 
         if (userRepository.existsById(userId)) {
@@ -83,7 +87,8 @@ public class UserService {
             updatedUser.setName(user.getName());
             updatedUser.setPassword(user.getPassword());
             return userRepository.save(updatedUser);
-        } else throw new UserIdNotFoundException("User not found");
-
+        } else {
+            throw new UserIdNotFoundException("User not found");
+        }
     }
 }
