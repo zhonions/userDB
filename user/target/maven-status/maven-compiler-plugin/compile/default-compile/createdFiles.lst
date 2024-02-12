@@ -1,1 +1,8 @@
-com/example/demo/DemoApplication.class
+com/example/user/entity/User$UserBuilder.class
+com/example/user/controller/UserController.class
+com/example/user/UserApplication.class
+com/example/user/service/UserService.class
+com/example/user/entity/User.class
+com/example/user/exceptions/UserInvalidAttributesException.class
+com/example/user/repository/UserRepository.class
+com/example/user/exceptions/UserIdNotFoundException.class
