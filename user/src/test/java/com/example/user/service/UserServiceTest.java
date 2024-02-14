@@ -224,5 +224,31 @@ class UserServiceTest {
 
         assertThrows(UserInvalidAttributesException.class, () -> userService.updateUserById(updatedUser, 1L));
     }
+    @Test
+    void testUpdateUserById_WithBlankNameAndPassword_ShouldThrowException() {
+        User user = new User();
+        user.setName("");
+        user.setPassword("");
+        Long userId = 123L;
 
+        UserInvalidAttributesException exception = assertThrows(UserInvalidAttributesException.class, () -> {
+            userService.updateUserById(user, userId);
+        });
+
+        verifyNoInteractions(userRepository);
+    }
+    @Test
+    void testUpdateUserById_WithEmptyNameAndPassword_ShouldThrowException() {
+
+        User user = new User();
+        user.setName("  ");
+        user.setPassword("  ");
+        Long userId = 123L;
+
+        UserInvalidAttributesException exception = assertThrows(UserInvalidAttributesException.class, () -> {
+            userService.updateUserById(user, userId);
+        });
+
+        verifyNoInteractions(userRepository);
+    }
 }
