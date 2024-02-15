@@ -21,7 +21,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
 class UserControllerTest {
@@ -33,10 +32,6 @@ class UserControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
-
-    @Autowired
-    private UserRepository userRepository;
-
 
 
     @Test
@@ -126,10 +121,24 @@ class UserControllerTest {
     }
 
     @Test
-    void deleteUserByIdDeletesUserWhenUserExists() throws Exception {
-        mockMvc.perform(delete("/user/{id}", 1L)
-                        .contentType(MediaType.APPLICATION_JSON))
+     void deleteUserByIdReturnSucess() throws Exception {
+        User userToDelete = User.builder()
+                .name("Name")
+                .password("Password")
+                .build();
+
+        when(userService.findUserById(1L)).thenReturn(Optional.of(userToDelete));
+
+        // Act & Assert
+        mockMvc.perform(delete("/user/{id}", 1L))
                 .andExpect(status().isOk());
+    }
+    @Test
+    void deleteUserByIdUserNotFoundReturnNotFound() throws Exception {
+        when(userService.findUserById(1L)).thenReturn(Optional.empty());
+
+        mockMvc.perform(delete("/user/{id}", 1L))
+                .andExpect(status().isNotFound());
     }
     @Test
      void updateUserById() {
